@@ -3,4 +3,4 @@ dist
 build
 .DS_STORE
 __pycache__
-src/smartengine.egg-info
+*/smartengine.egg-info/
