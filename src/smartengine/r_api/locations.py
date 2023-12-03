@@ -51,13 +51,16 @@ class LocationsApi:
                     try:
                         if element["childFixture"]:
                             for serial in element["childFixture"]:
-                                print(serial[9:])
                                 if sensor == serial[9:]:
                                     link = {}
                                     link["fixture"] = sensor
                                     link["room_id"] = element["id"]
                                     link["room_name"] = element["name"]
-                                    link["room_fixtures"] = element["childFixture"]
+                                    link["room_fixtures"] = []
+
+                                    for childFixture in element["childFixture"]:
+                                        childFixture = childFixture[9:]
+                                        link["room_fixtures"].append(childFixture)
                                     mapping.append(link)
                                     break
                     except KeyError:
@@ -80,10 +83,10 @@ class LocationsApi:
                         room = {}
                         room["id"] = element["id"]
                         room["name"] = element["name"]
-                        room["scenes"] = []
+                        room["scenes"] = {}
                         try:
                             for scene in element["sceneControl"]["scene"]:
-                                room["scenes"].append({scene["name"]: scene["order"]})
+                                room["scenes"][scene["name"]] = scene["order"]
                                 
                         except KeyError:
                             all_room_scenes.append(room)
@@ -101,10 +104,10 @@ class LocationsApi:
                 room = {}
                 room["id"] = element["id"]
                 room["name"] = element["name"]
-                room["scenes"] = []
+                room["scenes"] = {}
                 try:
                     for scene in element["sceneControl"]["scene"]:
-                        room["scenes"].append({scene["name"]: scene["order"]})
+                        room["scenes"][scene["name"]] = scene["order"]
                         
                 except KeyError:
                     all_room_scenes.append(room)

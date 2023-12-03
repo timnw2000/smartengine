@@ -110,7 +110,7 @@ Output:
 `Object.sort_fixtures()`
 
 ---
-Returns a sorted list of fixtures. The fixtures are sorted by their stats. You can specify the stat, the fixture should be sorted by through the `sort_by` parameter. The `sort_by` parameter takes 9 different parameters:  `"power", "temperature", "illuminance", "brightness", "humidity", "voc", "co2", "airPressure", "indoorAirQuality"`.
+Returns a sorted list of fixtures. The fixtures are sorted by their stats. You can specify the stat, the fixture should be sorted by through the `sort_by` parameter. The `sort_by` parameter takes 9 different parameters:  `"power"`, `"temperature"`, `"illuminance"`, `"brightness"`, `"humidity"`, `"voc"`, `"co2"`, `"airPressure"`, `"indoorAirQuality"`.
 By default the fixtures will be sorted by `"power"`.
 The `fixtures` parameter takes in serial numbers of fixtures. Only specified fixtures will be sorted according to the specified stat. By default all fixtures will be sorted according to the specified stat. The `order` parameter is by default set to `"ASC"`, which means the fixtures are sorted in ascending order. The `order` parameter can be set to `"DESC"` to sort the fixtures in descending order.
 
@@ -193,13 +193,13 @@ Output:
             "room_id": 222,
             "room_name": "Corridor",
             "room_fixtures": [
-                "/fixture/000000000SVS1U0101195006666",
-                "/fixture/CSJ00000000000C020133907777",
-                "/fixture/CSJ00000000000C020133908888",
-                "/fixture/CSJ00000000000C020133909999",
-                "/fixture/000000000SVS1Z00977HS999000",
-                "/fixture/CSJ00000000000C020133901234",
-                "/fixture/CSJ00000000000C020133904321"
+                "000000000SVS1U0101195006666",
+                "CSJ00000000000C020133907777",
+                "CSJ00000000000C020133908888",
+                "CSJ00000000000C020133909999",
+                "000000000SVS1Z00977HS999000",
+                "CSJ00000000000C020133901234",
+                "CSJ00000000000C020133904321"
             ]
         },
         {
@@ -207,10 +207,10 @@ Output:
             "room_id": 223,
             "room_name": "Office",
             "room_fixtures": [
-                "/fixture/00300000000001J030151102222",
-                "/fixture/00200000000001J020140203333",
-                "/fixture/00100000000001J020143804444",
-                "/fixture/000000000SVS1Z00977HS991111"
+                "00300000000001J030151102222",
+                "00200000000001J020140203333",
+                "00100000000001J020143804444",
+                "000000000SVS1Z00977HS991111"
             ]
         }
     ]
@@ -234,46 +234,24 @@ Output:
         {
             "id": 114,
             "name": "Corridor",
-            "scenes": [
-                {
-                    "0%": 4
-                },
-                {
-                    "100%": 1
-                },
-                {
-                    "30%": 3
-                },
-                {
-                    "60%": 2
-                },
-                {
-                    "SOS_0": 5
-                },
-                {
-                    "SOS_1": 6
-                },
-                {
-                    "SOS_2": 7
-                },
-                {
-                    "SOS_3": 8
-                },
-                {
-                    "SOS_4": 9
-                },
-                {
-                    "SOS_5": 10
-                },
-                {
-                    "SOS_6": 11
-                }
-            ]
+            "scenes": {
+                "0%": 4,
+                "100%": 1,
+                "30%": 3,
+                "60%": 2,
+                "SOS_0": 5,
+                "SOS_1": 6,
+                "SOS_2": 7,
+                "SOS_3": 8,
+                "SOS_4": 9,
+                "SOS_5": 10,
+                "SOS_6": 11
+            }
         },
         {
             "id": 348,
             "name": "Office Area",
-            "scenes": []
+            "scenes": {}
         }
     ]
 
