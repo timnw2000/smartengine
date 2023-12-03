@@ -3,7 +3,7 @@
 This Documentation serves as a guide on how to use this package and its including classes and methods.
 
 
-### class FixtureApi(user: str, password: str, ipv4: str)
+## class FixtureApi(user: str, password: str, ipv4: str)
 ---
 Initiate an FixtureApi-Object.
 
@@ -15,7 +15,7 @@ Initiate an FixtureApi-Object.
         ipv4_adress="192.168.178.1"
     )
 
-#### method get_all_fixtures(self) -> list[dict]
+### method get_all_fixtures(self) -> list[dict]
 `Object.get_all_fixtures()`
 
 ---
@@ -24,6 +24,7 @@ Gets all Fixtures that are currently in a location
     fixtures_list = Object.get_all_fixtures() 
 
 Output: 
+
     ...
 
     {
@@ -34,7 +35,7 @@ Output:
 
     ...
 
-#### method get_beacons(self, sensor_type: list[str]=None) -> list[dict]
+### method get_beacons(self, sensor_type: list[str]=None) -> list[dict]
 `Object.get_beacons()`
 
 ---
@@ -45,6 +46,7 @@ Specified `sensor_type` needs to be a list. The default is sensor_types are `["L
     beacons_list = Object.get_beacons(sensor_type=["LUMINAIRE"])
 
 Output: 
+
     ...
 
     {
@@ -56,7 +58,7 @@ Output:
 
     ...
 
-#### method get_sensor_stats(self, *sensors: str, sensor_type: list[str]=None) -> list[dict]
+### method get_sensor_stats(self, *sensors: str, sensor_type: list[str]=None) -> list[dict]
 `Object.get_sensor_stats()`
 
 ---
@@ -95,7 +97,7 @@ Output:
     ...
 
 
-#### method sort_fixtures(self, *fixtures: str, sort_by: str="power", order: str="ASC") -> list[dict]
+### method sort_fixtures(self, *fixtures: str, sort_by: str="power", order: str="ASC") -> list[dict]
 `Object.sort_fixtures()`
 
 ---
