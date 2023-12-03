@@ -5,7 +5,7 @@ This Documentation serves as a guide on how to use this package and its includin
 
 
 
-## class FixtureApi(user: str, password: str, ipv4: str)
+## class FixturesApi(user: str, password: str, ipv4: str)
 ---
 Initiate an FixtureApi-Object.
 
@@ -139,7 +139,7 @@ Output:
 
 
 
-## class FixtureApi(user: str, password: str, ipv4: str)
+## class LocationsApi(user: str, password: str, ipv4: str)
 ---
 Initiate an LocationsApi-Object.
 
