@@ -1,0 +1,11 @@
+README.md
+setup.py
+src/smartengine/__init__.py
+src/smartengine.egg-info/PKG-INFO
+src/smartengine.egg-info/SOURCES.txt
+src/smartengine.egg-info/dependency_links.txt
+src/smartengine.egg-info/requires.txt
+src/smartengine.egg-info/top_level.txt
+src/smartengine/r_api/__init__.py
+src/smartengine/r_api/fixtures.py
+src/smartengine/r_api/locations.py

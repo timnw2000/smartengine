@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: smartengine
+Version: 0.1.0
+Summary: A small library that simplifies the use of the smartengine rAPI
+Home-page: https://github.com/timnw2000/smartengine
+Author: Tim Nwungang
+Author-email: timnw.dev@gmail.com
+Requires: setuptools
+Requires-Dist: requests==2.31.0
