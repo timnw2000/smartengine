@@ -165,9 +165,4 @@ class FixturesApi:
             return sorted_fixtures
 
 
-if __name__ == "__main__":
-    smartengine = FixturesApi("admin", "FiatLux007", ip_adress="192.168.178.10")
-    print(json.dumps(smartengine.get_beacons(), indent=4))
-    print(json.dumps(smartengine.get_all_fixtures(), indent=4))
-    print(json.dumps(smartengine.get_sensor_stats(), indent=4))
     

@@ -154,19 +154,3 @@ class LocationsApi:
             
             return all_location_stats
         
-
-
-
-
-
-
-
-
-
-
-if __name__ == "__main__":
-    smartengine = LocationsApi("admin", "FiatLux007", ipv4_adress="192.168.178.10")
-    #print(json.dumps(smartengine.get_all_locations(), indent=4))
-    #print(json.dumps(smartengine.get_scenes(), indent=4))
-    #print(json.dumps(smartengine.fixture_in_location("SJ00000000000C020132900090"), indent=4))
-    print(json.dumps(smartengine.get_location_stats(), indent=4))

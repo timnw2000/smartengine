@@ -57,7 +57,11 @@ Output:
 
     #list of dictionaries
 
+
+### Documentation
 ---
++ [Developer Guide](docs/developer_guide.md) - Documentation for Developers
+
 
 ## License
 ---
