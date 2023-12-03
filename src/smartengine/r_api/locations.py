@@ -51,7 +51,8 @@ class LocationsApi:
                     try:
                         if element["childFixture"]:
                             for serial in element["childFixture"]:
-                                if sensor == serial[10:]:
+                                print(serial[9:])
+                                if sensor == serial[9:]:
                                     link = {}
                                     link["fixture"] = sensor
                                     link["room_id"] = element["id"]
@@ -85,7 +86,8 @@ class LocationsApi:
                                 room["scenes"].append({scene["name"]: scene["order"]})
                                 
                         except KeyError:
-                            continue
+                            all_room_scenes.append(room)
+                            pass
                         else:
                             all_room_scenes.append(room)
 
@@ -105,7 +107,8 @@ class LocationsApi:
                         room["scenes"].append({scene["name"]: scene["order"]})
                         
                 except KeyError:
-                    continue
+                    all_room_scenes.append(room)
+                    pass
                 else:
                     all_room_scenes.append(room)
 
@@ -129,6 +132,7 @@ class LocationsApi:
                             for key in element["sensorStats"]:
                                 room["room_stats"][key] = element["sensorStats"][key]["instant"]
                         except KeyError:
+                            all_location_stats.append(room)
                             pass
                         else:
                             all_location_stats.append(room)
@@ -148,6 +152,7 @@ class LocationsApi:
                     for key in element["sensorStats"]:
                         room["room_stats"][key] = element["sensorStats"][key]["instant"]
                 except KeyError:
+                    all_location_stats.append(room)
                     pass
                 else:
                     all_location_stats.append(room)
