@@ -43,7 +43,7 @@ class FixturesApi:
 
     def get_beacons(self, sensor_type: list[str]=None) -> list[dict]:
         if sensor_type is None:
-            sensor_type = ["LUMINAIRE", "WALL_SWITCH_5B"]
+            sensor_type = ["LUMINAIRE", "WALL_SWITCH_5B", "SENSOR"]
 
         all_beacons = []
         for element in self.json_["fixture"]:
@@ -70,7 +70,7 @@ class FixturesApi:
 
     def get_sensor_stats(self, *sensors: str, sensor_type: list[str]=None) -> list[dict]:
         if sensor_type is None:
-            sensor_type = ["LUMINAIRE", "WALL_SWITCH_5B"]
+            sensor_type = ["LUMINAIRE", "WALL_SWITCH_5B", "SENSOR"]
 
         all_sensor_stats = []
         if len(sensors) > 0:
@@ -80,12 +80,16 @@ class FixturesApi:
                         stats = {}
                         stats["serial_number"] = element["serialNum"]
                         stats["stats"] = {}
-                        for key in element["sensorStats"]:
-                            try:
-                                stats["stats"][key] = float(element["sensorStats"][key]["instant"])
-                            except:
-                                stats["stats"][key] = None
-                            all_sensor_stats.append(stats)
+                        try:
+                            for key in element["sensorStats"]:
+                                try:
+                                    stats["stats"][key] = float(element["sensorStats"][key]["instant"])
+                                except KeyError:
+                                    stats["stats"][key] = None
+                        except KeyError:
+                            pass
+
+                        all_sensor_stats.append(stats)
             
             return all_sensor_stats
         else:
@@ -94,11 +98,14 @@ class FixturesApi:
                     stats = {}
                     stats["serial_number"] = element["serialNum"]
                     stats["stats"] = {}
-                    for key in element["sensorStats"]:
-                        try:
-                            stats["stats"][key] = float(element["sensorStats"][key]["instant"])
-                        except:
-                            stats["stats"][key] = None
+                    try:
+                        for key in element["sensorStats"]:
+                            try:
+                                stats["stats"][key] = float(element["sensorStats"][key]["instant"])
+                            except KeyError:
+                                stats["stats"][key] = None
+                    except KeyError:
+                        pass
 
                     all_sensor_stats.append(stats)
                 
@@ -109,7 +116,7 @@ class FixturesApi:
 
 
     def sort_fixtures(self, *fixtures: str, sort_by: str="power", order: str="ASC") -> list[dict]:
-        if sort_by in ["power", "temperature", "illuminance", "brightness"]:
+        if sort_by in ["power", "temperature", "illuminance", "brightness", "humidity", "voc", "co2", "airPressure", "indoorAirQuality"]:
             pass
         else:
             sort_by = "power"
@@ -136,8 +143,8 @@ class FixturesApi:
                         
                         try:
                             fixture[sort_by] = float(element["sensorStats"][sort_by]["instant"])
-                        except:
-                            fixture[sort_by] = 0
+                        except KeyError:
+                            fixture[sort_by] = float("inf")
 
                         sorted_fixtures.append(fixture)
 
@@ -153,8 +160,8 @@ class FixturesApi:
                 
                 try:
                     fixture[sort_by] = float(element["sensorStats"][sort_by]["instant"])
-                except:
-                    fixture[sort_by] = 0
+                except KeyError:
+                    fixture[sort_by] = float("inf")
                 sorted_fixtures.append(fixture)
 
         if order == "ASC":
