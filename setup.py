@@ -18,4 +18,5 @@ setup(
     url="https://github.com/timnw2000/smartengine",
     requires=["setuptools"],
     install_requires=install_requires,
+    license="MIT"
 )
