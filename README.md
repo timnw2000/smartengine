@@ -22,40 +22,40 @@ Make sure the device that is running this code is connected to the master of the
 ---
 1 - Import Package:
 
-    ```py
+    
     from smartengine.rapi import fixtures, location
-    ```
+    
 
 
 2 - Initiate API-Object:
 
-    ```py
+    
     smartengine1 = fixtures.FixturesApi(
         user="<some_user>", 
         password="<some_password>", 
         ipv4_adress="<master_ipv4_adress>"
     )
-    ```
+    
 OR
 
-    ```py
+    
     smartengine2 = locations.LocationsApi(
         user="<some_user>", 
         password="<some_password>", 
         ipv4_adress="<master_ipv4_adress>"
     )
-    ```
+    
 
 
 3 - Call desired method:
 
-    ```py
+    
     all_fixtures = smartengine1.get_all_fixtures()
     
     all_locations = smartengine2.get_all_locations()
 
     print(all_fixtures)
-    ```
+    
 
 
 
