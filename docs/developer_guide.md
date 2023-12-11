@@ -7,7 +7,7 @@ This Documentation serves as a guide on how to use this package and its includin
 
 ## class FixturesApi(user: str, password: str, ipv4: str)
 ---
-Initiate an FixtureApi-Object.
+Initiate a FixtureApi-Object.
 
 ```py
 from smartengine.rapi import fixtures
@@ -49,7 +49,7 @@ Output:
 `Object.get_beacons()`
 
 ---
-Returns all beacons that are currently in a location if `sensor_type` in not specified
+Returns all beacons that are currently in a location if `sensor_type` is not specified.
 When `sensor_type` is specified only get beacons with the specified sensor_type.
 Specified `sensor_type` needs to be a list. The default is sensor_types are `["LUMINAIRE", "WALL_SWITCH_5B", "SENSOR"]`.
 
@@ -236,7 +236,7 @@ Output:
 `Object.get_scenes()`
 
 ---
-Takes a one or more locations as an input and returns all scenes that are available for the specified location. The `location` parameter takes in either the `id` as and `int`  or the `name` as a `string` of the location. It is recommended to use an `id` rather than a `name`, because an `id` is a unique identifier.
+Takes one or more locations as an input and returns all scenes that are available for the specified location. The `location` parameter takes in either the `id` as and `int`  or the `name` as a `string` of the location. It is recommended to use an `id` rather than a `name`, because an `id` is a unique identifier.
 
 ```py
 locations_scene_list = Object.get_scenes(
