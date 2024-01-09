@@ -1,1 +1,1 @@
-from . import fixtures, locations
+from . import restful
