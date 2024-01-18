@@ -2,8 +2,23 @@
 ---
 This Documentation serves as a guide on how to use this package and its including classes and methods.
 
+## class rApi(user: str, password: str, ipv4: str)
+---
+Initiate a rApi-Object.
 
+```py
+from smartengine.rapi import restful
 
+api = restful.rApi(
+    user="test", 
+    password="test12345", 
+    ipv4_adress="192.168.178.1"
+)
+```
+
+This Object inherits its behavior from both the FixtureApi-Object and the LocationsApi-Object.
+You can access the full functionality of both Base Classes. When you want your code to be clear regarding its functionality you can also still choose to implement the FixturesApi Class and the LocationsApi Class themself directly.
+The functionalities of both Base Classes are listed below.
 
 ## class FixturesApi(user: str, password: str, ipv4: str)
 ---
