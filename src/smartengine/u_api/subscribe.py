@@ -55,8 +55,6 @@ class ApiSubscription:
         This method utilizes a streaming HTTP request, and the yielded dictionaries depend on the response structure from 
         the server. It is designed to continuously yield data as long as the server provides it.        
         """
-
-
         if sensor_stat is None:
             payload = {
                 "protocolVersion" : "1",
@@ -143,8 +141,6 @@ class ApiSubscription:
         This method utilizes a streaming HTTP request, and the yielded dictionaries depend on the response structure from 
         the server. It is designed to continuously yield data as long as the server provides it.        
         """
-
-        
         if fixture is None:
             raise ValueError(f"Error: {self.MissingArgumentError} - Missing fixture Identification (Serialnumber)")
         if sensor_stat is None:
