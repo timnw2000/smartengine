@@ -4,6 +4,36 @@ import threading
 import re
 
 class ApiSetting:
+    """
+    A class for managing and setting scenes and policies.
+
+    This class provides functionality to interact with a smartdirector's uAPI for the purpose of setting or updating 
+    various configurations such as scenes and policies. It is designed to send structured requests to the uAPI using 
+    provided user credentials and an IP address.
+
+    Attributes:
+        ip (str): The IP address of the network system, default set to '192.168.1.1'.
+        user (str): Username for authentication with the network system.
+        __password (str): Password for authentication, kept private within the class.
+        url (str): Formatted URL string for making API requests.
+        NotFoundInApiError (int): Custom error code for not found errors in API.
+        SensorStatsNotAvailableError (int): Custom error code for unavailable sensor statistics.
+        MissingArgumentError (int): Custom error code for missing arguments in method calls.
+        sensor_stats (list[str]): List of available sensor statistics.
+
+    Methods:
+        __repr__: Returns a formal string representation of the ApiSetting instance.
+        set_scenes: Sets a specific scene for a given location in the network system.
+        set_policy: Activates a specific policy for a given location in the network system.
+
+    The class primarily handles sending structured JSON requests to smartdirectors's uAPI to modify or set various 
+    configurations. These configurations include scenes and policies which can be specified for different locations.
+
+    Example:
+        api_setting = ApiSetting(user='admin', password='password123')
+        response = api_setting.set_scenes(location='101', scene_name='Evening')
+        print(response)
+    """
     def __init__(self, user: str, password: str, ipv4_adress: str="192.168.1.1"):
         self.ip = ipv4_adress
         self.user = user
@@ -25,14 +55,8 @@ class ApiSetting:
         ]
 
 
-
-
-
     def __repr__(self):
         return f"{__class__.__name__}({self.user}, {self.__password}, {self.ip})"
-    
-
-
 
 
     def set_scenes(self, location: str=None, scene_name: str=None):

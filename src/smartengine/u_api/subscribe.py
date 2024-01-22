@@ -5,6 +5,39 @@ import re
 
 
 class ApiSubscription:
+    """
+    A class for managing API subscriptions to stream real-time location and fixture data.
+
+    This class establishes a connection with a smartdirector's API using provided user credentials and an IP address. 
+    It supports streaming data for specific locations or fixtures by subscribing to the server's updates, ensuring 
+    continuous data flow as changes occur.
+
+    Attributes:
+        ip (str): The IP address of the network system, default set to '192.168.1.1'.
+        user (str): Username for authentication with the network system.
+        __password (str): Password for authentication, kept private within the class.
+        url (str): Formatted URL string for making API requests.
+        NotFoundInApiError (int): Custom error code for not found errors in API.
+        SensorStatsNotAvailableError (int): Custom error code for unavailable sensor statistics.
+        MissingArgumentError (int): Custom error code for missing arguments in method calls.
+        sensor_stats (list[str]): List of available sensor statistics that can be streamed.
+
+    Methods:
+        __repr__: Returns a formal string representation of the ApiSubscription instance.
+        stream_location_data: Streams data for a specified location and its data points, yielding dictionaries 
+        with updates.
+        stream_fixture_data: Streams data for a specified fixture and its data points, yielding dictionaries 
+        with updates.
+
+    The class provides two primary methods for data streaming: `stream_location_data` and `stream_fixture_data`. 
+    Both methods utilize HTTP streaming to continuously receive and yield data updates from the server.
+
+    Example:
+        api = ApiSubscription(user='admin', password='password123')
+        for data in api.stream_location_data(location=101):
+            print(data)
+    """
+
     def __init__(self, user: str, password: str, ipv4_adress: str="192.168.1.1"):
         self.ip = ipv4_adress
         self.user = user
