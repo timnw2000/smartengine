@@ -8,7 +8,7 @@ class ApiSubscription:
     def __init__(self, user: str, password: str, ipv4_adress: str="192.168.1.1"):
         self.ip = ipv4_adress
         self.user = user
-        self.password = password
+        self.__password = password
         self.url = f"https://{ipv4_adress}/uApi"
         self.NotFoundInApiError = 8080
         self.SensorStatsNotAvailableError = 5050
@@ -23,15 +23,14 @@ class ApiSubscription:
             "temperature",
             "voc",
             "co2",
-
         ]
         
 
     def __repr__(self):
-        return f"{__class__.__name__}({self.user}, {self.password}, {self.ip})"
+        return f"{__class__.__name__}({self.user}, {self.__password}, {self.ip})"
     
 
-    def stream_location_data(self, location=None, sensor_stat=None) -> dict:
+    def stream_location_data(self, location: int=None, sensor_stat: str=None) -> dict:
         """
         Generates a stream of data for a specified location its datapoints.
 
@@ -88,7 +87,7 @@ class ApiSubscription:
         }
         json_payload = json.dumps(payload)
         chunks = ""
-        response = requests.post(self.url, data=json_payload, verify=False, auth=(self.user, self.password), stream=True)
+        response = requests.post(self.url, data=json_payload, verify=False, auth=(self.user, self.__password), stream=True)
         counter1 = 0
         counter2 = 0
         for chunk in response.iter_content(chunk_size=128):
@@ -176,7 +175,7 @@ class ApiSubscription:
         }
         json_payload = json.dumps(payload)
         chunks = ""
-        response = requests.post(self.url, data=json_payload, verify=False, auth=(self.user, self.password), stream=True)
+        response = requests.post(self.url, data=json_payload, verify=False, auth=(self.user, self.__password), stream=True)
         counter1 = 0
         counter2 = 0
         for chunk in response.iter_content(chunk_size=128):
