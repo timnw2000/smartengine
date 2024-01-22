@@ -2,6 +2,35 @@ import requests
 import json
 
 class LocationsApi:
+    """
+    A class to interface with a smartdirectors's rAPI for retrieving location-based data.
+
+    This class establishes a connection to a network system using an IP address, username, and password. It retrieves 
+    JSON data related to locations and provides methods to parse and present this information in various 
+    formats.
+
+    Attributes:
+        ip (str): The IP address of the network system, default set to '192.168.1.1'.
+        user (str): Username for authentication to access the network system.
+        password (str): Password for authentication.
+        system_name (str): Name of the smartengine-system extracted from the JSON data.
+
+    Methods:
+        __repr__: Returns a formal representation of the LocationsApi instance.
+        __str__: Returns a string representation of the location information in JSON format.
+        get_all_locations: Retrieves a list of all locations along with their details from the JSON data.
+        fixture_in_location: Maps fixture serial numbers to their respective locations.
+        get_scenes: Gathers scene control information for specified locations.
+        get_location_stats: Collects and returns statistics for specified locations.
+
+    The class uses HTTP requests to fetch data from the specified IP address. It parses the JSON data to provide 
+    easy access to various location-based information like fixtures, scenes, and location statistics.
+
+    Example:
+        api = LocationsApi(user='admin', password='password123')
+        locations = api.get_all_locations()
+        print(locations)
+    """
 
     def __init__(self, user: str, password: str, ipv4_adress: str="192.168.1.1"):
         self.ip = ipv4_adress

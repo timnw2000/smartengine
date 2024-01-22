@@ -2,7 +2,36 @@ import requests
 import json
 
 class FixturesApi:
+    """
+    A class for interacting with a smartdirector's rAPI to retrieve and process fixture data.
 
+    This class establishes a connection to a ssmartdirector using IP address, username, and password 
+    credentials. It fetches and stores JSON data from the smartdirector, focusing on fixture-related information. 
+    The class provides various methods to parse, manipulate, and retrieve specific data related to fixtures.
+
+    Attributes:
+        ip (str): IP address of the network system, default set to '192.168.1.1'.
+        user (str): Username for authentication to access the network system.
+        password (str): Password for authentication.
+        system_name (str): Name of the smartengine-system extracted from the JSON data.
+
+    Methods:
+        __repr__: Returns a formal string representation of the FixturesApi instance.
+        __str__: Returns a string representation of fixture information in JSON format.
+        get_all_fixtures: Retrieves detailed information about all fixtures.
+        get_beacons: Fetches beacon information for fixtures based on specified sensor types.
+        get_sensor_stats: Retrieves sensor statistics for specific sensors and sensor types.
+        sort_fixtures: Sorts a list of fixtures based on a specified attribute and order.
+
+    The class uses HTTP requests to communicate smartdirector and is capable of handling various fixture-related 
+    queries and operations, such as retrieving all fixture data, filtering beacons, fetching sensor statistics, and 
+    sorting fixtures based on specific criteria.
+
+    Example:
+        api = FixturesApi(user='admin', password='password123')
+        fixture_data = api.get_all_fixtures()
+        print(fixture_data)
+    """
     def __init__(self, user: str, password: str, ipv4_adress: str="192.168.1.1"):
         self.ip = ipv4_adress
         self.user = user

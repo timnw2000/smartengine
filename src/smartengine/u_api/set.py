@@ -83,3 +83,13 @@ class ApiSetting:
         json_payload = json.dumps(payload)
         response = requests.post(url=self.url, data=json_payload, verify=False, auth=(self.user, self.__password))
         return response
+
+
+
+def main():
+    api = ApiSetting(user="admin", password="FiatLux007", ipv4_adress="192.168.178.10")
+    api.set_policy(location=104, policy_name="100%")
+
+
+if __name__ == "__main__":
+    main()
