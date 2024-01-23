@@ -1,9 +1,25 @@
 # Developer Documentation
 ---
 This Documentation serves as a guide on how to use this package and its including classes and methods.
+# rApi Documentation
+---
+## class rApi(user: str, password: str, ipv4: str)
+---
+Initiate a rApi-Object.
 
+```py
+from smartengine.rapi import restful
 
+api = restful.rApi(
+    user="test", 
+    password="test12345", 
+    ipv4_adress="192.168.178.1"
+)
+```
 
+This Class inherits its behavior from both the FixtureApi-Class and the LocationsApi-Class.
+You can access the full functionality of both Base Classes. When you want your code to be clear regarding its functionality you can also still choose to implement the FixturesApi Class and the LocationsApi Class themself directly.
+The functionalities of both Base Classes are listed below.
 
 ## class FixturesApi(user: str, password: str, ipv4: str)
 ---
@@ -321,3 +337,205 @@ Output:
     }
 ]
 ```
+# uApi Documentation
+---
+## class uApi(user: str, password: str, ipv4: str)
+---
+Initiate a uApi-Object.
+
+```py
+from smartengine.u_api import unified
+
+api = unified.uApi(
+    user="test", 
+    password="test12345", 
+    ipv4_adress="192.168.178.1"
+)
+```
+
+This Class inherits its behavior from both the ApiSetting-Class and the ApiSubscription-Class.
+You can access the full functionality of both Base Classes. When you want your code to be clear regarding its functionality you can also still choose to implement the ApiSetting Class and the ApiSubscription Class themself directly.
+The functionalities of both Base Classes are listed below.
+
+## class ApiSetting(user: str, password: str, ipv4_adress: str)
+---
+Initiate an ApiSetting object to interact with the smardirector's uAPI.
+
+```py
+from smartengine.u_api import set
+
+api = set.ApiSetting(
+    user="admin", 
+    password="admin12345", 
+    ipv4_adress="192.168.1.1"
+)
+```
+
+The ApiSetting object allows you to set scenes and the brighness within a location through its methods. It manages uAPI interactions by constructing requests with the necessary credentials and endpoint information.
+
+### Attributes:
+---
+- ip (str): The IPv4 address of the smart home system's API endpoint.
+- user (str): The username for API authentication.
+- url (str): The full URL to the API endpoint.
+- NotFoundInApiError (int): Error code for not found entities in the API.
+- SensorStatsNotAvailableError (int): Error code for unavailable sensor stats.
+- MissingArgumentError (int): Error code for missing required arguments.
+- sensor_stats (list): A list of possible sensor statistics to retrieve.
+
+### Special Methods:
+__repr__:
+Returns a formal string representation of the ApiSetting instance.
+
+
+### method set_scene(self, location: str=None, scene_name: str=None) -> requests.Response
+---
+Set scenes of a specified location and returns a requests.Response Object
+```py
+Object.set_scene(location=104, scene_name="PresentaionMode")
+```
+Activates a specified scene at a given location. This method only works when the specified scene is available for the specified location.
+
+#### Parameters:
+---
+- location (int, required): The ID of the location where the scene should be set.
+- scene_name (str, required): The name of the scene to activate.
+
+#### Returns:
+---
+requests.Response: The HTTP response from the API endpoint.
+
+#### Raises:
+---
+- ValueError: If location is not provided.
+- ValueError: If scene_name is not provided.
+
+
+Output:
+
+```py
+{
+    response = Object.set_scene(location=104, scene_name="PresentaionMode")
+    response.status_code
+    >>> 200
+}
+```
+
+### method set_brightness(self, location: int=None, brightness: int=None) -> requests.Response
+```py
+Object.set_brightness(location=104, brightness=66)
+```
+
+#### Parameters:
+---
+- location (int, required): The ID of the location where the brightness should be set.
+- brightness (int, required): The desired brightness level, where acceptable values range from 0 (off) to 100 (maximum brightness).
+
+#### Returns:
+---
+requests.Response: The HTTP response from the uAPI endpoint.
+
+#### Raises:
+---
+
+ValueError: If location is not provided.
+ValueError: If brightness is not provided.
+
+Output:
+
+```py
+{
+    response = Object.set_scene(location=104, scene_name="PresentaionMode")
+    response.status_code
+    >>> 200
+}
+```
+
+
+The `ApiSubscription` class is designed for managing API subscriptions to stream real-time location and fixture data from a smartdirector's API.
+
+## Class ApiSubscription(user: str, password: str, ipv4_adress: str)
+---
+Initiate an ApiSetting object to interact with the smardirector's uAPI.
+The methods of this class are generator objects, which are only yielding the specified data, when the server sends data. The Server only sends data, when there is a change in the specified data.
+(e.g. temperature: 22° C -> temperature 22,3° C => Server sends 22,3° C)
+
+```py
+from smartengine.u_api import subscribe
+api = subscribe.ApiSubscription(
+    user="admin", 
+    password="admin12345", 
+    ipv4_adress="192.168.1.1"
+)
+```
+This ApiSubscription Object establishes a connection with a smartdirector's API using provided user credentials and an IP address. It supports streaming data for specific locations or fixtures by subscribing to the server's updates, ensuring continuous data flow as changes occur.
+
+### Attributes
+---
+- ip (str): IP address of the network system, default set to '192.168.1.1'.
+- user (str): Username for authentication with the network system.
+- url (str): Formatted URL string for making API requests.
+- NotFoundInApiError (int): Custom error code for not found errors in API.
+- SensorStatsNotAvailableError (int): Custom error code for unavailable sensor statistics.
+- MissingArgumentError (int): Custom error code for missing arguments in method calls.
+- sensor_stats (list[str]): List of available sensor statistics that can be streamed.
+
+### Special Methods
+__repr__:
+Returns a formal string representation of the ApiSubscription instance.
+
+
+### method stream_location_data(self, location: int=None, sensor_stat: str=None) -> dict
+---
+Generates a stream of data for a specified location and its datapoints.
+
+#### Parameters:
+---
+- location (str, optional): ID of the location.
+- sensor_stat (str, required): Specific room data to subscribe to.
+
+#### Yields:
+---
+dict: A dictionary containing the streamed data for the specified location and its sensor data.
+
+#### Raises:
+---
+- ValueError: If the provided 'sensor_stat' is not available.
+
+#### Example Usage:
+---
+
+```py
+api = ApiSubscription(user='admin', password='password123', ipv4_adress="192.168.178.1")
+generator_object = api.stream_location_data(location=101, sensor_stat="roomTemperature")
+for data in generator_object:
+    print(data)
+```
+
+
+### method stream_fixture_data(self, fixture: str=None, sensor_stat: str=None) -> dict
+---
+Generates a stream of data for a specified fixture and its sensor data.
+
+#### Parameters:
+---
+- fixture (str, required): Serial number of the fixture.
+- sensor_stat (str, optional): Specific sensor status to subscribe to.
+
+#### Yields:
+---
+dict: A dictionary containing the streamed data for the specified fixture.
+
+#### Raises:
+
+- ValueError: If 'fixture' is not provided or if the provided 'sensor_stat' is not available.
+
+#### Example Usage
+---
+
+```py
+api = ApiSubscription(user='admin', password='password123')
+for data in api.stream_fixture_data(location=101, sensor_stat="humidity"):
+    print(data)
+```
+Note: This class utilizes streaming HTTP requests, and the yielded dictionaries depend on the response structure from the server. It is designed to continuously yield data as long as the server provides it.
