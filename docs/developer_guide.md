@@ -339,7 +339,7 @@ Output:
 ```
 # uApi Documentation
 ---
-## class ApiSetting(user: str, password: str, ipv4_adress: str="192.168.1.1")
+## class ApiSetting(user: str, password: str, ipv4_adress: str)
 ---
 Initiate an ApiSetting object to interact with the smardirector's uAPI.
 
@@ -359,7 +359,6 @@ The ApiSetting object allows you to set scenes and the brighness within a locati
 ### Attributes:
 ---
 - ip (str): The IPv4 address of the smart home system's API endpoint.
-
 - user (str): The username for API authentication.
 - url (str): The full URL to the API endpoint.
 - NotFoundInApiError (int): Error code for not found entities in the API.
