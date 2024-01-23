@@ -1,10 +1,40 @@
-import requests
 import json
-import threading
-import re
+import requests
 
 
 class ApiSubscription:
+    """
+    A class for managing API subscriptions to stream real-time location and fixture data.
+
+    This class establishes a connection with a smartdirector's API using provided user credentials and an IP address. 
+    It supports streaming data for specific locations or fixtures by subscribing to the server's updates, ensuring 
+    continuous data flow as changes occur.
+
+    Attributes:
+        ip (str): The IP address of the network system, default set to '192.168.1.1'.
+        user (str): Username for authentication with the network system.
+        __password (str): Password for authentication, kept private within the class.
+        url (str): Formatted URL string for making API requests.
+        NotFoundInApiError (int): Custom error code for not found errors in API.
+        SensorStatsNotAvailableError (int): Custom error code for unavailable sensor statistics.
+        MissingArgumentError (int): Custom error code for missing arguments in method calls.
+        sensor_stats (list[str]): List of available sensor statistics that can be streamed.
+
+    Methods:
+        __repr__: Returns a formal string representation of the ApiSubscription instance.
+        stream_location_data: Streams data for a specified location and its data points, yielding dictionaries 
+        with updates.
+        stream_fixture_data: Streams data for a specified fixture and its data points, yielding dictionaries 
+        with updates.
+
+    The class provides two primary methods for data streaming: `stream_location_data` and `stream_fixture_data`. 
+    Both methods utilize HTTP streaming to continuously receive and yield data updates from the server.
+
+    Example:
+        api = ApiSubscription(user='admin', password='password123')
+        for data in api.stream_location_data(location=101):
+            print(data)
+    """
     def __init__(self, user: str, password: str, ipv4_adress: str="192.168.1.1"):
         self.ip = ipv4_adress
         self.user = user
@@ -23,12 +53,15 @@ class ApiSubscription:
             "temperature",
             "voc",
             "co2",
+            "humidity",
+            "pressure",
+            "indoorAirQuality",
         ]
-        
+
 
     def __repr__(self):
         return f"{__class__.__name__}({self.user}, {self.__password}, {self.ip})"
-    
+
 
     def stream_location_data(self, location: int=None, sensor_stat: str=None) -> dict:
         """
@@ -36,12 +69,13 @@ class ApiSubscription:
 
         This method creates a generator object that streams data from a server. It sends a JSON payload in a POST request 
         to the server to subscribe to data updates for a specified location and sensordata. The server sends data only 
-        when there are changes in the data points. The method streams the response data in chunks and yields dictionaries 
+        when there are changes in the data points. Every first payload includes all data points. 
+        The method streams the response data in chunks and yields dictionaries 
         containing the updated data points as they become available.
 
         Parameters:
         - location (str, optional): ID of the location. If None, subscribes to to every location.
-        - sensor_stat (str, optional): Specific room data to subscribe to. If None, subscribes to all sensor data
+        - sensor_stat (str, optional): Specific room data to subscribe to. If None, subscribes to sensor data
         for the given location. Raises a ValueError if the specified sensor data is generally not available.
 
         Yields:
@@ -70,47 +104,33 @@ class ApiSubscription:
             }
         elif sensor_stat not in self.sensor_stats:
             raise ValueError(f"Error: {self.SensorStatsNotAvailableError} - Specified Sensorstat is generally not available")
-        payload = {
-            "protocolVersion" : "1",
-            "schemaVersion" : "1.4.0",
-            "requestType" : "subscribe",
-            "requestData" : {
-                "location" : [
-                    {
-                        "id" : location,
-                        "sensorStats" : {
-                            sensor_stat : {}
+        else:
+            payload = {
+                "protocolVersion" : "1",
+                "schemaVersion" : "1.4.0",
+                "requestType" : "subscribe",
+                "requestData" : {
+                    "location" : [
+                        {
+                            "id" : location,
+                            "sensorStats" : {
+                                sensor_stat : {}
+                            }
                         }
-                    }
-                ]
+                    ]
+                }
             }
-        }
         json_payload = json.dumps(payload)
         chunks = ""
         response = requests.post(self.url, data=json_payload, verify=False, auth=(self.user, self.__password), stream=True)
-        counter1 = 0
-        counter2 = 0
         for chunk in response.iter_content(chunk_size=128):
-            if chunk:
-                decoded_chunk = chunk.decode()
-                if "responseData" in decoded_chunk:
-                    if counter1 == 0:
-                        counter1 += 1
-                        continue
-                    chunks = ""
-                    chunks = chunks + decoded_chunk
-                if "location" in decoded_chunk:
-                    if counter2 == 0:
-                        counter2 += 1
-                        continue
-                    chunks = chunks + decoded_chunk
-                if "_c_instant" in decoded_chunk:
-                    chunks = chunks + decoded_chunk
-                    if "\r\n\r\n\r\n" in chunks:
-                        chunks.replace("\r\n\r\n\r\n", "")
-                        chunks = json.loads(chunks)
-                        yield chunks
-                        
+            chunks += (chunk.decode())
+            if "\r\n\r\n\r\n" in chunk.decode():
+                chunks.replace("\r\n\r\n\r\n", "")
+                chunks = json.loads(chunks)
+                response_object = chunks
+                chunks = ""
+                yield response_object
     
 
 
@@ -122,12 +142,12 @@ class ApiSubscription:
 
         This method creates a generator object that streams data from a server. It sends a JSON payload in a POST request 
         to the server to subscribe to data updates for a specified fixture and sensor status. The server sends data only 
-        when there are changes in the data points. The method streams the response data in chunks and yields dictionaries 
+        when there are changes in the data points. Every first payload includes all data points. The method streams the response data in chunks and yields dictionaries 
         containing the updated data points as they become available.
 
         Parameters:
         - fixture (str, optional): Serial number of the fixture. If None, raises a ValueError indicating a missing fixture ID.
-        - sensor_stat (str, optional): Specific sensor status to subscribe to. If None, subscribes to all sensor statuses 
+        - sensor_stat (str, optional): Specific sensor status to subscribe to. If None, subscribes to all sensor data 
         for the given fixture. Raises a ValueError if the specified sensor data is gerally not available.
 
         Yields:
@@ -158,132 +178,30 @@ class ApiSubscription:
             }
         elif sensor_stat not in self.sensor_stats:
             raise ValueError(f"Error: {self.SensorStatsNotAvailableError} - Specified Sensorstat is generally not available")
-        payload = {
-            "protocolVersion" : "1",
-            "schemaVersion" : "1.4.0",
-            "requestType" : "subscribe",
-            "requestData" : {
-                "fixture" : [
-                    {
-                        "serialNum" : fixture,
-                        "sensorStats" : {
-                            sensor_stat : {}
+        else:
+            payload = {
+                "protocolVersion" : "1",
+                "schemaVersion" : "1.4.0",
+                "requestType" : "subscribe",
+                "requestData" : {
+                    "fixture" : [
+                        {
+                            "serialNum" : fixture,
+                            "sensorStats" : {
+                                sensor_stat : {}
+                            }
                         }
-                    }
-                ]
+                    ]
+                }
             }
-        }
         json_payload = json.dumps(payload)
         chunks = ""
         response = requests.post(self.url, data=json_payload, verify=False, auth=(self.user, self.__password), stream=True)
-        counter1 = 0
-        counter2 = 0
         for chunk in response.iter_content(chunk_size=128):
-            if chunk:
-                decoded_chunk = chunk.decode()
-                if "responseData" in decoded_chunk:
-                    if counter1 == 0:
-                        counter1 += 1
-                        continue
-                    chunks = ""
-                    chunks = chunks + decoded_chunk
-                if "location" in decoded_chunk:
-                    if counter2 == 0:
-                        counter2 += 1
-                        continue
-                    chunks = chunks + decoded_chunk
-                if "_c_instant" in decoded_chunk:
-                    chunks = chunks + decoded_chunk
-                    if "\r\n\r\n\r\n" in chunks:
-                        chunks.replace("\r\n\r\n\r\n", "")
-                        chunks = json.loads(chunks)
-                        yield chunks
-
-
-
-
-
-
-def main():
-    api = ApiSubscription(user="admin", password="smartengine", ipv4_adress="78.94.221.187:53311")
-
-    generator = api.stream_fixture_data("CFV00000000000V030174000855", "power")
-    for element in generator:
-        print(element)
-
-
-
-
-
-if __name__ == "__main__":
-    main()
-
-
-
-
-
-
-'''
-
-# Define the request payload
-payload = {
-    "protocolVersion" : "1",
-    "schemaVersion" : "1.4.0",
-    "requestType" : "subscribe",
-    "requestData" : {
-        "location" : [
-            {
-                "id" : 144,
-                "sensorStats" : {
-                    "roomTemperature" : {}
-                }
-            },
-        ]
-    }
-}
-
-
-
-
-
-# Convert the payload to JSON format
-json_payload = json.dumps(payload)
-chunks = ""
-# Send the post request with the payload
-#try:
-response = requests.post(url, data=json_payload, verify=False, auth=("admin", "FiatLux007"), stream=True)
-counter1 = 0
-counter2 = 0
-counter3 = 0
-#for chunk in response.iter_content(chunk_size=128):
-for chunk in response.iter_content(chunk_size=128):
-
-    if chunk:
-        decoded_chunk = chunk.decode()
-        if "responseData" in decoded_chunk:
-            if counter1 == 0:
-                counter1 += 1
-                continue
-            chunks = chunks + decoded_chunk
-        if "location" in decoded_chunk:
-            if counter2 == 0:
-                counter2 += 1
-                continue
-            chunks = chunks + decoded_chunk
-        if "_c_instant" in decoded_chunk:
-
-            chunks = chunks + decoded_chunk
-            if "\r\n\r\n\r\n" in chunks:
-                #chunks = chunks.replace("\r\n\r\n\r\n", "")
-                #json_data = json.loads(chunks)
-            
+            chunks += (chunk.decode())
+            if "\r\n\r\n\r\n" in chunk.decode():
                 chunks.replace("\r\n\r\n\r\n", "")
                 chunks = json.loads(chunks)
-
-                temp = chunks["responseData"]["location"][0]["sensorStats"]["roomTemperature"]["instant"]
-                print(temp)
-            
-
-            chunks = ""
-       
-'''
+                response_object = chunks
+                chunks = ""
+                yield response_object
