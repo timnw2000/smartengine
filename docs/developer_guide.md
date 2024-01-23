@@ -17,7 +17,7 @@ api = restful.rApi(
 )
 ```
 
-This Object inherits its behavior from both the FixtureApi-Object and the LocationsApi-Object.
+This Class inherits its behavior from both the FixtureApi-Class and the LocationsApi-Class.
 You can access the full functionality of both Base Classes. When you want your code to be clear regarding its functionality you can also still choose to implement the FixturesApi Class and the LocationsApi Class themself directly.
 The functionalities of both Base Classes are listed below.
 
@@ -339,12 +339,30 @@ Output:
 ```
 # uApi Documentation
 ---
+## class uApi(user: str, password: str, ipv4: str)
+---
+Initiate a uApi-Object.
+
+```py
+from smartengine.u_api import unified
+
+api = unified.uApi(
+    user="test", 
+    password="test12345", 
+    ipv4_adress="192.168.178.1"
+)
+```
+
+This Class inherits its behavior from both the ApiSetting-Class and the ApiSubscription-Class.
+You can access the full functionality of both Base Classes. When you want your code to be clear regarding its functionality you can also still choose to implement the ApiSetting Class and the ApiSubscription Class themself directly.
+The functionalities of both Base Classes are listed below.
+
 ## class ApiSetting(user: str, password: str, ipv4_adress: str)
 ---
 Initiate an ApiSetting object to interact with the smardirector's uAPI.
 
 ```py
-from smartengine.uapi import set
+from smartengine.u_api import set
 
 api = set.ApiSetting(
     user="admin", 
