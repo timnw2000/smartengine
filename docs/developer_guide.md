@@ -344,7 +344,6 @@ Output:
 Initiate an ApiSetting object to interact with the smardirector's uAPI.
 
 ```py
-Copy code
 from smartengine.uapi import set
 
 api = set.ApiSetting(
@@ -379,7 +378,7 @@ Object.set_scene(location=104, scene_name="PresentaionMode")
 ```
 Activates a specified scene at a given location. This method only works when the specified scene is available for the specified location.
 
-Parameters:
+#### Parameters:
 ---
 - location (int, required): The ID of the location where the scene should be set.
 - scene_name (str, required): The name of the scene to activate.
@@ -409,7 +408,7 @@ Output:
 Object.set_brightness(location=104, brightness=66)
 ```
 
-Parameters:
+#### Parameters:
 ---
 - location (int, required): The ID of the location where the brightness should be set.
 - brightness (int, required): The desired brightness level, where acceptable values range from 0 (off) to 100 (maximum brightness).
@@ -433,7 +432,6 @@ Output:
     >>> 200
 }
 ```
-
 
 
 The `ApiSubscription` class is designed for managing API subscriptions to stream real-time location and fixture data from a smartdirector's API.
@@ -473,7 +471,7 @@ Returns a formal string representation of the ApiSubscription instance.
 ---
 Generates a stream of data for a specified location and its datapoints.
 
-Parameters:
+#### Parameters:
 ---
 - location (str, optional): ID of the location.
 - sensor_stat (str, required): Specific room data to subscribe to.
@@ -501,7 +499,7 @@ for data in generator_object:
 ---
 Generates a stream of data for a specified fixture and its sensor data.
 
-Parameters:
+#### Parameters:
 ---
 - fixture (str, required): Serial number of the fixture.
 - sensor_stat (str, optional): Specific sensor status to subscribe to.
