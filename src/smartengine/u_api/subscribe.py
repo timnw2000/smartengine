@@ -1,7 +1,5 @@
-import requests
 import json
-import threading
-import re
+import requests
 
 
 class ApiSubscription:
@@ -37,7 +35,6 @@ class ApiSubscription:
         for data in api.stream_location_data(location=101):
             print(data)
     """
-
     def __init__(self, user: str, password: str, ipv4_adress: str="192.168.1.1"):
         self.ip = ipv4_adress
         self.user = user
@@ -56,6 +53,9 @@ class ApiSubscription:
             "temperature",
             "voc",
             "co2",
+            "humidity",
+            "pressure",
+            "indoorAirQuality",
         ]
 
 
@@ -205,24 +205,3 @@ class ApiSubscription:
                 response_object = chunks
                 chunks = ""
                 yield response_object
-
-
-
-
-
-
-
-
-def main():
-    api = ApiSubscription(user="admin", password="FiatLux007", ipv4_adress="192.168.178.10")
-
-    generator = api.stream_location_data(104, sensor_stat="motion")
-    for element in generator:
-        print(element)
-
-
-
-
-
-if __name__ == "__main__":
-    main()
