@@ -9,8 +9,8 @@ with open("README.md", "r") as long_description:
     
 setup(
     name="smartengine",
-    version="0.1.1",
-    description="A small library that simplifies the use of the smartengines rAPI",
+    version="0.2.0",
+    description="A small library that simplifies the use of the smartengines rAPI and uApi",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Tim Nwungang",

@@ -62,7 +62,7 @@ print(response.status_code)
 
 ### Documentation
 ---
-+ [Developer Guide](docs/developer_guide.md) - Documentation for Developers
++ [Developer Guide](https://github.com/timnw2000/smartengine/blob/rework/docs/developer_guide.md) - Documentation for Developers
 
 
 ## License
