@@ -358,19 +358,14 @@ The ApiSetting object allows you to set scenes and the brighness within a locati
 
 ### Attributes:
 ---
-ip (str): The IPv4 address of the smart home system's API endpoint.
----
-user (str): The username for API authentication.
----
-url (str): The full URL to the API endpoint.
----
-NotFoundInApiError (int): Error code for not found entities in the API.
----
-SensorStatsNotAvailableError (int): Error code for unavailable sensor stats.
----
-MissingArgumentError (int): Error code for missing required arguments.
----
-sensor_stats (list): A list of possible sensor statistics to retrieve.
+- ip (str): The IPv4 address of the smart home system's API endpoint.
+
+- user (str): The username for API authentication.
+- url (str): The full URL to the API endpoint.
+- NotFoundInApiError (int): Error code for not found entities in the API.
+- SensorStatsNotAvailableError (int): Error code for unavailable sensor stats.
+- MissingArgumentError (int): Error code for missing required arguments.
+- sensor_stats (list): A list of possible sensor statistics to retrieve.
 
 ### Special Methods:
 __repr__:
@@ -462,19 +457,13 @@ This ApiSubscription Object establishes a connection with a smartdirector's API 
 
 ### Attributes
 ---
-ip (str): IP address of the network system, default set to '192.168.1.1'.
----
-user (str): Username for authentication with the network system.
----
-url (str): Formatted URL string for making API requests.
----
-NotFoundInApiError (int): Custom error code for not found errors in API.
----
-SensorStatsNotAvailableError (int): Custom error code for unavailable sensor statistics.
----
-MissingArgumentError (int): Custom error code for missing arguments in method calls.
----
-sensor_stats (list[str]): List of available sensor statistics that can be streamed.
+- ip (str): IP address of the network system, default set to '192.168.1.1'.
+- user (str): Username for authentication with the network system.
+- url (str): Formatted URL string for making API requests.
+- NotFoundInApiError (int): Custom error code for not found errors in API.
+- SensorStatsNotAvailableError (int): Custom error code for unavailable sensor statistics.
+- MissingArgumentError (int): Custom error code for missing arguments in method calls.
+- sensor_stats (list[str]): List of available sensor statistics that can be streamed.
 
 ### Special Methods
 __repr__:
