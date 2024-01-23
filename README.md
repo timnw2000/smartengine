@@ -23,11 +23,12 @@ Make sure the device that is running this code is connected to the master of the
 1 - Import Package:
 
 ```py
-from smartengine.rapi import fixtures, location
+from smartengine.r_api import fixtures, location, restful
+from smartengine.u_api import subscribe, set, unified
 ```
 
 
-2 - Initiate API-Object:
+2 - Initiate rAPI:
 
 ```py
 smartengine1 = fixtures.FixturesApi(
@@ -39,7 +40,7 @@ smartengine1 = fixtures.FixturesApi(
 OR
 
 ```py
-smartengine2 = locations.LocationsApi(
+smartengine2 = unified.uApi(
     user="<some_user>", 
     password="<some_password>", 
     ipv4_adress="<master_ipv4_adress>"
@@ -51,17 +52,12 @@ smartengine2 = locations.LocationsApi(
 
 ```py
 all_fixtures = smartengine1.get_all_fixtures()
-
-all_locations = smartengine2.get_all_locations()
-
-print(all_fixtures)
+print(all_fixtures) 
+>>> list of dictionaries
+response = smartengine2.set_brightness(location=103, brightness=50)
+print(response.status_code)
+>>> 200
 ```
-
-
-
-Output:
-
-    #list of dictionaries
 
 
 ### Documentation
