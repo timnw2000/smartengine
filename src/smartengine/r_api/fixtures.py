@@ -1,5 +1,6 @@
-import requests
 import json
+import requests
+
 
 class FixturesApi:
     """
@@ -38,6 +39,20 @@ class FixturesApi:
         self.password = password
         self.json_ = requests.get(f"https://{self.ip}/rApi", auth=(self.user, self.password), verify=False).json()
         self.system_name = self.json_["name"]
+        self.sensor_stats = [
+            "illuminance",
+            "ceillingTemperature",
+            "roomTemperature",
+            "power",
+            "brightness",
+            "motion",
+            "temperature",
+            "voc",
+            "co2",
+            "humidity",
+            "pressure",
+            "indoorAirQuality",
+        ]
         
 
     def __repr__(self):
@@ -122,8 +137,6 @@ class FixturesApi:
         - The method handles 'KeyError' if either 'beaconSupported' or 'type' keys are missing in any fixture 
         entries, skipping those fixtures.
         """
-
-
         if sensor_type is None:
             sensor_type = ["LUMINAIRE", "WALL_SWITCH_5B", "SENSOR"]
 
@@ -183,8 +196,6 @@ class FixturesApi:
         the corresponding stat value is set to None.
         - The method handles 'KeyError' if 'sensorStats' is missing in any fixture entries, skipping those fixtures.
         """
-
-
         if sensor_type is None:
             sensor_type = ["LUMINAIRE", "WALL_SWITCH_5B", "SENSOR"]
 
@@ -265,9 +276,7 @@ class FixturesApi:
         attribute value is missing, it is set to infinity (float("inf")).
         - Sorting is applied based on the provided 'order' parameter (ascending or descending).
         """
-
-
-        if sort_by in ["power", "temperature", "illuminance", "brightness", "humidity", "voc", "co2", "airPressure", "indoorAirQuality"]:
+        if sort_by in self.sensor_stats:
             pass
         else:
             sort_by = "power"
@@ -276,9 +285,7 @@ class FixturesApi:
             pass
         else:
             order = "ASC"
-
         sorted_fixtures = []
-
         if len(fixtures) > 0:
             for serialnumber in fixtures:
                 for element in self.json_["fixture"]:
@@ -289,16 +296,12 @@ class FixturesApi:
                             fixture["name"] = element["name"]
                         except KeyError:
                              fixture["name"] = None
-
                         fixture["type"] = element["type"]
-                        
                         try:
                             fixture[sort_by] = float(element["sensorStats"][sort_by]["instant"])
                         except KeyError:
                             fixture[sort_by] = float("inf")
-
                         sorted_fixtures.append(fixture)
-
         else:
             for element in self.json_["fixture"]:
                 fixture = {}
@@ -308,13 +311,11 @@ class FixturesApi:
                 except KeyError:
                     fixture["name"] = None
                 fixture["type"] = element["type"]
-                
                 try:
                     fixture[sort_by] = float(element["sensorStats"][sort_by]["instant"])
                 except KeyError:
                     fixture[sort_by] = float("inf")
                 sorted_fixtures.append(fixture)
-
         if order == "ASC":
             sorted_fixtures.sort(key=lambda element: element[sort_by])
             return sorted_fixtures

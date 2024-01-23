@@ -1,5 +1,6 @@
-import requests
 import json
+import requests
+
 
 class LocationsApi:
     """
@@ -76,15 +77,12 @@ class LocationsApi:
             location = {}
             location["id"] = element["id"]
             location["name"] = element["name"]
-
             try:
                 if element["childLocation"]:
                     location["child_location"] = True
             except KeyError:
                 location["child_location"] = False
-
             all_locations.append(location)
-
         return all_locations
     
 
@@ -145,7 +143,6 @@ class LocationsApi:
                     except KeyError:
                         continue
             return mapping
-        
         else:
             raise ValueError("Argument - fixtures - is missing")
         
@@ -199,18 +196,14 @@ class LocationsApi:
                         try:
                             for scene in element["sceneControl"]["scene"]:
                                 room["scenes"][scene["name"]] = scene["order"]
-                                
                         except KeyError:
                             all_room_scenes.append(room)
                             pass
                         else:
                             all_room_scenes.append(room)
-
                     else:
                         pass
-            
             return all_room_scenes
-
         else:
             for element in self.json_["location"]:
                 room = {}
@@ -220,13 +213,11 @@ class LocationsApi:
                 try:
                     for scene in element["sceneControl"]["scene"]:
                         room["scenes"][scene["name"]] = scene["order"]
-                        
                 except KeyError:
                     all_room_scenes.append(room)
                     pass
                 else:
                     all_room_scenes.append(room)
-
             return all_room_scenes
         
         
@@ -283,12 +274,9 @@ class LocationsApi:
                             pass
                         else:
                             all_location_stats.append(room)
-
                     else:
                         pass
-            
             return all_location_stats
-        
         else:
             for element in self.json_["location"]:
                 room = {}
@@ -303,6 +291,5 @@ class LocationsApi:
                     pass
                 else:
                     all_location_stats.append(room)
-            
             return all_location_stats
         

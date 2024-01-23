@@ -4,7 +4,6 @@ import json
 import requests
 
 
-
 class rApi(fixtures.FixturesApi, locations.LocationsApi):
     """
     A combined API class inheriting functionalities from FixturesApi and LocationsApi.
