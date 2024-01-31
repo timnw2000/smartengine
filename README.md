@@ -1,6 +1,6 @@
 # smartengine Package
 ---
-This package simplifies the usage of smartengine's Restful-Api. More specifically it simplifies retrieving data from the Api. The data that can be retrieved includes sensor data such as serial_number, name and data sensors are continuesly collecting as well as location data such as location ids, location names and location sensors.
+This package simplifies the usage of smartengine's Restful-Api and Unified-Api. More specifically it simplifies retrieving and writing data from and to the Api. The data that can be retrieved includes sensor data such as serial_number, name and data sensors are continuesly collecting as well as location data such as location ids, location names and location sensors. The data that can be written includes activating scenes and setting the brightness. The streaming of data is also possible.
 
 
 
